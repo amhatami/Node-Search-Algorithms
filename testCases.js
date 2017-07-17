@@ -29,9 +29,7 @@
  * Author: Amir Hatami
  */
 
-//var nodesort = require('./node-sort-algorithms');
-var nodesort = require('./node-sort-test');
-var nodesearch = require('./node-search-test');
+var nodesearch = require('./node-search-Algorithms');
 var displaymode = "No"; //"Yes";  // "Yes" for more details of algorithm progress 
 var base = 2;
 var RUN = 32;
