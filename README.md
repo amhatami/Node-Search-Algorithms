@@ -187,35 +187,22 @@ solveSearching(arrin19,15,'3&1&4&2','linearSearch');
 
 **Parameters**
 
-  * **array** - array to be sorted
-  * **displaymode** - for more details of algorithm progress 
-  * **base** - for positional numeral system with a radix, or base  e.g.(2 Binary - 8 Octal - 10 Decimal - 16 Hexadecimal - 60 	Sexagesimal etc. ) [List of numeral systems](https://en.wikipedia.org/wiki/List_of_numeral_systems) 
+  * **inputArray** - Required. The Array in which you want to search for the value of the searchElement argument.
+  * **searchElement** - Required. Element to locate in the array 
+  * **fromIndex** - Optional. The character number in the inputArray array at which you want to start searching.
+  * **searchFar** - for more details of algorithm progress 
+  * **outputOptions** - for more details of algorithm progress 
 
 
 **Functions**
 
-  * **Merge Sort - .mergeSort( array )**
-
-  * **Insertion Sort - .insertionSort( array )**
-
-  * **Radix Sort - .radixSort( array , base )**
-
-  * **Counting Sort - .countingSort( array )**
-
-  * **Bucket Sort - .bucketSort( array )**
-
-  * **Bin Sort - .binSort( array )**
-
-  * **Bead Sort - .beadSort( array )**
-
-  * **Gravity Sort - .gravitySort( array )**
-
+  * **Linear Search - .linearSearch(inputArray,searchElement,fromIndex,searchFar,outputOptions)**
 
 Coming soon :) !
 
-  * **Selection Sort - .selectionSort( array )**
+  * **Binary Search - .binarySearch(inputArray,searchElement,fromIndex,searchFar,outputOptions)**
 
-  * **Quick Sort - .quickSort( array, [comparator] )**
+  * **Jump Search - .jumpSearch(inputArray,searchElement,fromIndex,searchFar,outputOptions)**
 
 
 ## Testing
