@@ -247,3 +247,8 @@ Coming soon :) !
   OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
   WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+## References
+
+ * https://en.wikipedia.org/wiki/Search_algorithm
+ * http://algs4.cs.princeton.edu/30searching/
+ 
