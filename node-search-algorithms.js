@@ -33,31 +33,40 @@
 var displaymode = "No"; // by defualt No details display 
 var code = new Array();
  
-module.exports = function(inputArray,lookingfor,serachOptions,displayStatus,callback) {
+module.exports = function(inputArray,searchElement,fromIndex,searchLong, outputOptions,displayStatus,callback) {
+  
+  arrLen = inputArray.length;
+  searchElement = typeof searchElement !== 'undefined' ? searchElement :  "" ;
+  fromIndex = typeof fromIndex !== 'undefined' ? fromIndex :  0 ;
+  searchLong = typeof searchLong !== 'undefined' ? searchLong : "END" ;
+  outputOptions = typeof outputOptions !== 'undefined' ? outputOptions : "";
+  
   displaymode = displayStatus;
   try {
-    code = getArrayInfo(inputArray);   // code[0]:max element   Code[1]:bucket size square of lenght    code[2] array lenght  code[3] min element 
-    if (displaymode=="Yes") console.log("max",code[0],"lenght square",code[1],"array lenght",code[2],"min",code[3]);
-    if (!inputArray || inputArray.length === undefined) {
+    
+    
+    //code = getArrayInfo(inputArray);   // code[0]:max element   Code[1]:bucket size square of lenght    code[2] array lenght  code[3] min element 
+    //if (displaymode=="Yes") console.log("max",code[0],"lenght square",code[1],"array lenght",code[2],"min",code[3]);
+    if (!inputArray || arrLen === undefined) {
         throw new Error("Input array is not valid !");
     // } else if (code[3] < 0 ) {
     //     throw new Error("negative element not accepted ! ");
     } else 
        callback(null, {
 			      linearSearch:function () {
-              if (lookingfor=="" ) throw new Error("There is nothing to serach for !");
+              if (searchElement=="" ) throw new Error("There is nothing to serach for !");
               if (displaymode=="Yes") console.log("Searching in Array",inputArray,"with Linear Search");
-        		  return linearSearchLocal(inputArray,code['length'],lookingfor,serachOptions);
+        		  return linearSearchLocal(inputArray,searchElement,fromIndex,searchLong,arrLen,outputOptions);
 			},
 			      binarySearch:function () {
-              if (lookingfor=="" ) throw new Error("There is nothing to serach for !");
+              if (searchElement=="" ) throw new Error("There is nothing to serach for !");
               if (displaymode=="Yes") console.log("Searching in Array",inputArray,"with Binary Search");
-        		  return lbinarySearchLocal(inputArray,code['length'],lookingfor,serachOptions);
+        		  return binarySearchLocal(inputArray,searchElement,fromIndex,searchLong,arrLen,outputOptions);
 			},
 			      defaultSearch:function () {
-              if (lookingfor=="" ) throw new Error("There is nothing to serach for !");
+              if (searchElement=="" ) throw new Error("There is nothing to serach for !");
               if (displaymode=="Yes") console.log("Searching in Array",inputArray,"with default Javascript Searching!");
-        		  return defaultSearchLocal(inputArray,code['length'],lookingfor,serachOptions);
+        		  return defaultSearchLocal(inputArray,searchElement,fromIndex,searchLong,arrLen,outputOptions);
 			}
     });
   }
@@ -118,19 +127,19 @@ getArrayInfo = function(input)
 //   creat bucket size
 //   find Array lenght  
 // *******  original for Bead Sort but used by most of algoritms
-serachArrayOptions = function(serachOption,arrlen)
+serachArrayOptions = function(outputOptions,arrlen)
 { 
-    serachOption = typeof serachOption !== 'undefined' ? serachOption : "";
-    serachOption=serachOption.toLowerCase();
-    serachOption=removeOrdinalNumberSuffix(serachOption);
+    outputOptions = typeof outputOptions !== 'undefined' ? outputOptions : "";
+    outputOptions=outputOptions.toLowerCase();
+    outputOptions=removeOrdinalNumberSuffix(outputOptions);
 
-    //if (displaymode=="Yes") console.log(serachOption);
+    //if (displaymode=="Yes") console.log(outputOptions);
     var isRange = /^\d{1,10}-\d{1,10}$/;
     var isCases = /^\d{1,10}&\d{1,10}/;
     var isNum = /^\d{1,10}$/;
 
-    if (isRange.test(serachOption)) {
-        pulledOutNum = serachOption.split("-");
+    if (isRange.test(outputOptions)) {
+        pulledOutNum = outputOptions.split("-");
         optionResult = [parseInt(pulledOutNum[0]),parseInt(pulledOutNum[1])];
         optionMessage = "return range of ";
         optionMessage += addOrdinalNumberSuffix(parseInt(pulledOutNum[0])); 
@@ -139,8 +148,8 @@ serachArrayOptions = function(serachOption,arrlen)
         optionMessage += " matche elemets";
         if (displaymode=="Yes") console.log("Yes this is a range : "+optionMessage);
             return [optionResult,optionMessage,'range'];
-    } else if (isCases.test(serachOption)) {
-        pulledOutNum = serachOption.split("&");
+    } else if (isCases.test(outputOptions)) {
+        pulledOutNum = outputOptions.split("&");
         optionResult = [];
         optionMessage = "return ";
         perimeterStr = "";
@@ -152,8 +161,8 @@ serachArrayOptions = function(serachOption,arrlen)
         optionMessage += " match elemets";
         if (displaymode=="Yes") console.log("Yes these are Cases : "+optionMessage);
             return [optionResult,optionMessage,'cases'];
-    } else if (isNum.test(serachOption)) {
-        pulledOutNum = parseInt(serachOption);
+    } else if (isNum.test(outputOptions)) {
+        pulledOutNum = parseInt(outputOptions);
         optionMessage = " return ";
         optionMessage += addOrdinalNumberSuffix(parseInt(pulledOutNum)); 
         optionMessage += " match elemet";
@@ -162,20 +171,20 @@ serachArrayOptions = function(serachOption,arrlen)
           return [optionResult,optionMessage,'one'];
     }        
 
-	  switch(serachOption) {
+	  switch(outputOptions) {
 		case "first":
 		case "1st":
 		case "1":
 		  var typeOption = 'one';
 			var optionResult = [1,1];
-			optionMessage = "Only return first element matching ";
+			optionMessage = "return first match element ";
 			break;
 		case "second":
 		case "2nd":
 		case "2":
 		  var typeOption = 'one';
 			var optionResult = [2,2];
-			optionMessage = "return Second match element ";
+			optionMessage = "return second match element ";
 			break;
 		case "third":
 		case "3rd":
@@ -241,18 +250,37 @@ sortNumber = function(a,b)
 
 // Function to : 
 //   for defualt javascript seraching 
-defaultSearchLocal = function(inputArray,arrLen,lookingFor,serachOptions) 
+defaultSearchLocal = function(inputArray,searchElement,fromIndex,searchLong,arrLen,outputOptions) 
 { 
-  if (displaymode == "Yes") console.log(arrLen, lookingFor,serachOptions);
-  serachGuidance = serachArrayOptions(serachOptions,arrLen);
+  if (displaymode == "Yes") console.log("fromIndex",fromIndex,"arrLen",arrLen,"searchElement". searchElement,"outputOptions",outputOptions);
+  serachGuidance = serachArrayOptions(outputOptions,arrLen);
   if (displaymode == "Yes") console.log(serachGuidance[2],serachGuidance);
+
+  var findings = new Array();
 
   switch(serachGuidance[2]) {
 		case "one":
   		  if (serachGuidance[0][0]==1) {
-  		       return inputArray.indexOf(lookingFor);
+  		       findings["1st"] = inputArray.indexOf(searchElement,fromIndex);
+             findings['searchElement'] = searchElement;
+             findings['fromIndex'] = fromIndex;
+             findings['searchLong'] = searchLong;
+             findings['arrLen'] = arrLen;
+             findings['outputType'] = 'defualt'; //serachGuidance[2];
+             findings['outputOptions'] = outputOptions;
+             findings['outputMessage'] = serachGuidance[1];
+             return findings;
+
   		  } else if (serachGuidance[0][0]==arrLen) {
-  		      return inputArray.lastIndexOf(lookingFor);
+  		       findings["1st"] = inputArray.lastIndexOf(searchElement,fromIndex);
+             findings['searchElement'] = searchElement;
+             findings['fromIndex'] = fromIndex;
+             findings['searchLong'] = searchLong;
+             findings['arrLen'] = arrLen;
+             findings['outputType'] = 'defualt'; //serachGuidance[2];
+             findings['outputOptions'] = outputOptions;
+             findings['outputMessage'] = serachGuidance[1];
+             return findings;
   		  }
 			break;
 		// case "range":
@@ -266,7 +294,15 @@ defaultSearchLocal = function(inputArray,arrLen,lookingFor,serachOptions)
 		//     end = strInfo['max'];
 		// 	break;
 		default:
-       return inputArray.indexOf(lookingFor);
+  		       findings["1st"] = inputArray.indexOf(searchElement,fromIndex);
+             findings['searchElement'] = searchElement;
+             findings['fromIndex'] = fromIndex;
+             findings['searchLong'] = searchLong;
+             findings['arrLen'] = arrLen;
+             findings['outputType'] = 'defualt';  //serachGuidance[2];
+             findings['outputOptions'] = outputOptions;
+             findings['outputMessage'] = serachGuidance[1];
+             return findings;
 	}
 }
 
@@ -298,13 +334,17 @@ swap = function(a, b)
  */
 
 
-// This function returns index of element lookingFor in input[]
-linearSearchLocal = function(input, arrLen, lookingFor,serachOptions)
-    {
-      
-        if (displaymode == "Yes") console.log(arrLen, lookingFor,serachOptions);
+// This function returns index of element searchElement in input[]
+linearSearchLocal = function(input,searchElement,fromIndex,searchLong,arrLen,outputOptions)
+    {  
+        
+        searchLong = (searchLong == 'END' || searchLong == 0 ) ? arrLen-fromIndex :  searchLong ;
+        searchLong = (fromIndex+searchLong > arrLen ) ? arrLen-fromIndex :  searchLong ;
+        if (fromIndex >= arrLen ) return -1;  
+        
+        if (displaymode == "Yes") console.log(arrLen, searchElement,outputOptions);
 
-        serachGuidance = serachArrayOptions(serachOptions,arrLen);
+        serachGuidance = serachArrayOptions(outputOptions,arrLen);
 
         if (displaymode == "Yes") console.log(serachGuidance[2],serachGuidance);
         
@@ -331,17 +371,17 @@ linearSearchLocal = function(input, arrLen, lookingFor,serachOptions)
 
         message = serachGuidance[1];
 
-        if (displaymode == "Yes") console.log("start: ",start," end: ",end," Message:",message," arrLen:",arrLen);
+        if (displaymode == "Yes") console.log("start: ",start," end: ",end,"fromIndex",fromIndex,"searchLong",searchLong, " Message:",message," arrLen:",arrLen);
         
         foundCounter = 1;
         foundTag = false;
         foundBuff = "";
         var findings = new Array();
-        for (i = 0; i < arrLen; i++)
+        for (i = fromIndex; i < fromIndex+searchLong; i++)
         {
             // Return the index of the element if the element
             // is found
-            if (input[i] == lookingFor){
+            if (input[i] == searchElement){
                 foundBuff = i;
                 foundTag = true;
                 if (start<=foundCounter && foundCounter<=end && serachGuidance[2]=='cases') {
@@ -354,9 +394,13 @@ linearSearchLocal = function(input, arrLen, lookingFor,serachOptions)
                 if (displaymode=="Yes") console.log("found at index [",foundCounter,"] ",findings,start,end,foundCounter,i);
                 if (serachGuidance[2]=="one" && foundCounter==start) {
                       if (displaymode=="Yes") console.log("catch one at index[",foundCounter,"] ",start,end,foundCounter,i);
-                      findings['type'] = serachGuidance[2];
-                      findings['options'] = serachOptions;
-                      findings['message'] = serachGuidance[1];
+                      findings['searchElement'] = searchElement;
+                      findings['fromIndex'] = fromIndex;
+                      findings['searchLong'] = searchLong;
+                      findings['arrLen'] = arrLen;
+                      findings['outputType'] = serachGuidance[2];
+                      findings['outputOptions'] = outputOptions;
+                      findings['outputMessage'] = serachGuidance[1];
                      return findings;
                 } 
                 foundCounter++;
@@ -370,9 +414,13 @@ linearSearchLocal = function(input, arrLen, lookingFor,serachOptions)
         // return -1 if the element is not found
         if (findings.lenght == 0 ) return -1;
 
-        findings['type'] = serachGuidance[2];
-        findings['options'] = serachOptions;
-        findings['message'] = serachGuidance[1];
+        findings['searchElement'] = searchElement;
+        findings['fromIndex'] = fromIndex;
+        findings['searchLong'] = searchLong;
+        findings['arrLen'] = arrLen;
+        findings['outputType'] = serachGuidance[2];
+        findings['outputOptions'] = outputOptions;
+        findings['outputMessage'] = serachGuidance[1];
         return findings;
     }
 
