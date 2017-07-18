@@ -61,30 +61,30 @@ var arrin18 = [12, 34, 54, 2, 3];
 var arrin19 = [7,2,3,15,19,12,10,4,8,11,007,5,00017,6,9,12,1,13,18,20,5,8,11,15,12,2,9,10,4,11,10,12,7,9,15];   // smal numbers for bead sort
 
 
-function solveSearching(inputArray,lookingfor,serachOptions,searchingMethod) {
+function solveSearching(inputArray,searchElement,fromIndex,searchFar,outputOptions,searchingMethod) {
     var arr_original = inputArray.toString() ;
     var sortedArray = inputArray;
     var serachResult ;
 
-    nodesearch(inputArray, lookingfor, serachOptions, displaymode,  function(err,searchRef) {
+    nodesearch(inputArray, searchElement, fromIndex, searchFar, outputOptions, displaymode,  function(err,searchRef) {
         if (err) {
 	         console.log(err);
 	                }
 	      else {
 			  switch(searchingMethod) {
 					case "linearSearch":
-						var result = searchRef.linearSearch(inputArray,lookingfor,serachOptions);
+						var result = searchRef.linearSearch(inputArray,searchElement,fromIndex,searchFar,outputOptions);
 						searchMehodmessage = "Linear Search";
 						break;
 					case "binarySearch":
-						var result = searchRef.binarySearch(inputArray,lookingfor,serachOptions);
+						var result = searchRef.binarySearch(inputArray,searchElement,fromIndex,searchFar,outputOptions);
 						searchMehodmessage = "Binary Search";
 						break;
 					default:
-						var result = searchRef.defaultSearch(inputArray,lookingfor,serachOptions);  
+						var result = searchRef.defaultSearch(inputArray,searchElement,fromIndex,searchFar,outputOptions);  
 						searchMehodmessage = "defualt javascript Search";
 				}
-	         console.log("Success attempt to search for "+lookingfor+" in below array by "+searchMehodmessage+" : \r\n \t ["+arr_original+" ] \r\n and result info is : ");
+	         console.log("Success attempt to search for "+searchElement+" in below array by "+searchMehodmessage+" : \r\n \t ["+arr_original+" ] \r\n and result info is : ");
            console.log( result );
   
 	      serachResult = result;
@@ -95,15 +95,17 @@ function solveSearching(inputArray,lookingfor,serachOptions,searchingMethod) {
     return serachResult;
 };
 
-solveSearching(arrin19,15,'3&1','linearSearch');
-solveSearching(arrin19,15,'1-3','linearSearch');
-solveSearching(arrin19,15,'ALL','linearSearch');
-solveSearching(arrin19,15,'1&4','linearSearch');
-solveSearching(arrin19,15,'Last','linearSearch');
-solveSearching(arrin19,15,'First','linearSearch');
-solveSearching(arrin19,15,'Second','linearSearch');
-solveSearching(arrin19,15,'1ST','linearSearch');
-solveSearching(arrin19,15,'1','linearSearch');
-solveSearching(arrin19,15,'3&1&4&2','linearSearch');
-//solveSearching(arrin19,15,'Last');
-//solveSearching(arrin19,15);
+solveSearching(arrin19,15,"","",'3&1','linearSearch');
+solveSearching(arrin19,15,4,"",'1-3','linearSearch');
+solveSearching(arrin19,15,4,"",'ALL','linearSearch');
+solveSearching(arrin19,15,4,20,'1&4','linearSearch');
+solveSearching(arrin19,15,4,30,'Last','linearSearch');
+solveSearching(arrin19,15,4,15,'First','linearSearch');
+solveSearching(arrin19,15,4,10,'Second','linearSearch');
+solveSearching(arrin19,15,4,10,'1ST','linearSearch');
+solveSearching(arrin19,15,4,10,'1','linearSearch');
+solveSearching(arrin19,15,4,10,'3&1&4&2','linearSearch');
+solveSearching(arrin19,15,5,10,'Last');
+solveSearching(arrin19,15,8,10);
+
+
