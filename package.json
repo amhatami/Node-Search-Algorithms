@@ -16,3 +16,39 @@
   },
   "license": "MIT"
 }
+
+
+
+{
+  "name": "node-search-algorithms",
+  "version": "1.0.1",
+  "author": "Amir Hatami <am.hatami@gmail.com>",
+  "description": "A searching library for Node.js & javascript made based on well known algorithmes included : Linear Search , Binary Search , Jump Search , etc..",
+  "contributors": [],
+  "bin": {},
+  "scripts": {
+    "test": "test-Cases/*.js",
+    "minify": "node-search-algorithms.min.js"
+  },
+  "main": "node-search-algorithms.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amhatami/Node-Search-Algorithms"
+  },
+  "keywords": [
+    "math",
+    "search",
+    "algorithms",
+    "node",
+    "string",
+    "integer",
+    "array",
+    "precision",
+    "arithmetic"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "tap": "~0.4.1"
+  },
+  "license": "MIT"
+}
