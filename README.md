@@ -76,21 +76,27 @@ The output is a permutation (reordering) of the input.
 var nodesearch = require('./node-algorithms-algorithms');
 var displaymode = "No"; //"Yes";  // "Yes" for more details of algorithm progress 
 ...
-nodesearch(inputArray, lookingfor, searchFromTo, outputOptions, displaymode,  function(err,searchRef) {
+nodesearch(inputArray, searchElement, fromIndex, searchFar, outputOptions, displaymode,  function(err,searchRef) {
         if (err) {
             // TODO error handeling 
             }
 	      else {
-           var result = searchRef.linearSearch(inputArray,lookingfor,outputOptions);   
+           var result = searchRef.linearSearch(inputArray,searchElement,fromIndex,searchFar,outputOptions);   
            // TODO output 
 	            }
     });
 ```
 
 ## Ruls :
- * Depended on the Sort algorithms, input Array could be integers, float, decima, ocat, hex or binary.
- * Array's element could be negative for only these Algorithms; Insertion Sort , Merge Sort , 3 Way Merge Sort , Quick Sort , 3 Way Quick Sort and etc.
+ * The first item has position 0, the second item has position 1, and so on.
+ * The search will start at the specified position (fromIndex), or at the beginning if no start position is specified, and end the search at the end of the array.
+ * The search will Returns The index of the first occurrence of the specified value , if no output Options is specified (outputOptions) If the item is present more than once.
+ 	e.g, outputOptions='Last' then Returns The index of the Last occurrence
+ 	   , outputOptions='First' then Returns The index of the first occurrence
+ 	   , outputOptions='All' then Returns The index of the all occurrence
+ * Depended on the Searchig algorithms, input Array could be array of string, integers, float, decima, ocat, hex or binary.
  * Returns error mesage if not found valid input.
+ * Returns -1 if the item is not found.
  * Turn On details of Algorithms progress useing : displaymode = "Yes"  
  ```js
  var displaymode = "No"; //"Yes";
@@ -101,7 +107,7 @@ nodesearch(inputArray, lookingfor, searchFromTo, outputOptions, displaymode,  fu
   Demos of the node-sort module are located in: [./test-Cases](https://github.com/amhatami/Node-Sort-Algorithms/tree/master/test-Cases)
 
 ```js
-var nodesearch = require('./node-search-algorithms');
+var nodesearch = require('./node-search-Algorithms');
 var displaymode = "No"; //"Yes";  // "Yes" for more details of algorithm progress 
 var base = 2;
 var RUN = 32;
@@ -133,30 +139,30 @@ var arrin18 = [12, 34, 54, 2, 3];
 var arrin19 = [7,2,3,15,19,12,10,4,8,11,007,5,00017,6,9,12,1,13,18,20,5,8,11,15,12,2,9,10,4,11,10,12,7,9,15];   // smal numbers for bead sort
 
 
-function solveSearching(inputArray,lookingfor,outputOptions,searchingMethod) {
+function solveSearching(inputArray,searchElement,fromIndex,searchFar,outputOptions,searchingMethod) {
     var arr_original = inputArray.toString() ;
     var sortedArray = inputArray;
     var serachResult ;
 
-    nodesearch(inputArray, lookingfor, searchFromTo, outputOptions, displaymode,  function(err,searchRef) {
+    nodesearch(inputArray, searchElement, fromIndex, searchFar, outputOptions, displaymode,  function(err,searchRef) {
         if (err) {
 	         console.log(err);
 	                }
 	      else {
 			  switch(searchingMethod) {
 					case "linearSearch":
-						var result = searchRef.linearSearch(inputArray,lookingfor,outputOptions);
+						var result = searchRef.linearSearch(inputArray,searchElement,fromIndex,searchFar,outputOptions);
 						searchMehodmessage = "Linear Search";
 						break;
 					case "binarySearch":
-						var result = searchRef.binarySearch(inputArray,lookingfor,outputOptions);
+						var result = searchRef.binarySearch(inputArray,searchElement,fromIndex,searchFar,outputOptions);
 						searchMehodmessage = "Binary Search";
 						break;
 					default:
-						var result = searchRef.defaultSearch(inputArray,lookingfor,outputOptions);  
+						var result = searchRef.defaultSearch(inputArray,searchElement,fromIndex,searchFar,outputOptions);  
 						searchMehodmessage = "defualt javascript Search";
 				}
-	         console.log("Success attempt to search for "+lookingfor+" in below array by "+searchMehodmessage+" : \r\n \t ["+arr_original+" ] \r\n and result info is : ");
+	         console.log("Success attempt to search for "+searchElement+" in below array by "+searchMehodmessage+" : \r\n \t ["+arr_original+" ] \r\n and result info is : ");
            console.log( result );
   
 	      serachResult = result;
@@ -167,19 +173,18 @@ function solveSearching(inputArray,lookingfor,outputOptions,searchingMethod) {
     return serachResult;
 };
 
-solveSearching(arrin19,15,'3&1','linearSearch');
-solveSearching(arrin19,15,'1-3','linearSearch');
-solveSearching(arrin19,15,'ALL','linearSearch');
-solveSearching(arrin19,15,'1&4','linearSearch');
-solveSearching(arrin19,15,'Last','linearSearch');
-solveSearching(arrin19,15,'First','linearSearch');
-solveSearching(arrin19,15,'Second','linearSearch');
-solveSearching(arrin19,15,'1ST','linearSearch');
-solveSearching(arrin19,15,'1','linearSearch');
-solveSearching(arrin19,15,'3&1&4&2','linearSearch');
-//solveSearching(arrin19,15,'Last');
-//solveSearching(arrin19,15);
-
+solveSearching(arrin19,15,"","",'3&1','linearSearch');
+solveSearching(arrin19,15,4,"",'1-3','linearSearch');
+solveSearching(arrin19,15,4,"",'ALL','linearSearch');
+solveSearching(arrin19,15,4,20,'1&4','linearSearch');
+solveSearching(arrin19,15,4,30,'Last','linearSearch');
+solveSearching(arrin19,15,4,15,'First','linearSearch');
+solveSearching(arrin19,15,4,10,'Second','linearSearch');
+solveSearching(arrin19,15,4,10,'1ST','linearSearch');
+solveSearching(arrin19,15,4,10,'1','linearSearch');
+solveSearching(arrin19,15,4,10,'3&1&4&2','linearSearch');
+solveSearching(arrin19,15,5,10,'Last');
+solveSearching(arrin19,15,8,10);
 ```
 
 
@@ -238,4 +243,9 @@ Coming soon :) !
 
  * https://en.wikipedia.org/wiki/Search_algorithm
  * http://algs4.cs.princeton.edu/30searching/
+ * https://www.toptal.com/developers/sorting-algorithms
+ * http://www.geeksforgeeks.org/searching-algorithms/
+ * https://www.hackerrank.com/domains/algorithms/search
+ * https://leetcode.com/problemset/all/
+ * https://www.topcoder.com/community/data-science/data-science-tutorials/introduction-to-string-searching-algorithms/
  
